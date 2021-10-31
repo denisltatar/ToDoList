@@ -7,48 +7,134 @@
 // import { connect } from 'react-redux'
 // import * as actionTypes from '../store/actions';
 // import * as actionTypes from '../store/actions/actions';
-import Grid from '@material-ui/core/Grid'
+import { useState, useContext } from 'react';
+import { UserContext } from './UserContext';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-const Form = () => {
-    
-const onChange = (event) => {
-    // Saving the input
-    const title = event.target.value;
-    
-    // Checking the length of the input
-    if(title.length === 0){
-      
-        // setError("Please enter title");
-    } else {
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// import ArticleSharpIcon from '@material-ui/icons-material/ArticleSharp';
+// import AutoAwesomeSharpIcon from '@material-ui/icons/AutoAwesomeSharp';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import ListIcon from '@material-ui/icons/List';
 
-        // setError("");
+
+const useStyles = makeStyles({
+    container: {
+        padding: 16
     }
-    
-    // Set the title to our ask
-    // setTitle(title);
-}
-    return (
-        <form>
-            <Grid container alignItems="center">
-                <Grid item md={12}>
-                    <TextField id="outlined-basic" onChange={onChange} label="Add task(s)" placeholder="Task Name" fullWidth multiline variant="outlined" />
-                    {/* <TextField value={title} onChange={handleChange} 
-                    error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter A Task To Get Done" multiline variant="outlined" /> */}
-                </Grid>
+});
 
-                <Grid item md={12}>
-                    {/* Our button here will call handleClick() when our button is clicked! */}
-                    <Button variant="contained" type="submit" color="primary">Add</Button>
-                    {/* <Button variant="contained" color="primary">Add</Button> */}
-                </Grid>
-            </Grid>
-        </form>
-        
+const Form = () => {
+    const classes = useStyles();
+
+    // Creating our variable for user input
+    const [userInput, setUserInput] = useState('');
+
+    // Accessing our UserContect Global data!
+    const {toDoList, setToDoList} = useContext(UserContext);
+
+    const handleChange = (e) => {
+        e.preventDefault()
+
+        setUserInput(e.target.value);
+        // console.log(userInput);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        setToDoList([
+            // Making each new task appear at the top of the list
+            userInput,
+            // Throwing the rest of our list below
+            ...toDoList
+        ])
+    }
+
+    return (
+        // <form>
+        //     <Grid container alignItems="center">
+        //         <Grid item md={12}>
+        //             <TextField id="outlined-basic" onChange={handleChange} label="Add task(s)" placeholder="Task Name" fullWidth multiline variant="outlined" />
+        //             {/* <TextField value={title} onChange={handleChange} 
+        //             error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter A Task To Get Done" multiline variant="outlined" /> */}
+        //         </Grid>
+
+        //         <Grid item md={12}>
+        //             {/* Our button here will call handleClick() when our button is clicked! */}
+        //             <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>Add</Button>
+        //             {/* <Button variant="contained" color="primary">Add</Button> */}
+        //         </Grid>
+        //     </Grid>
+        // </form>
+
+        <Container className={classes.container} maxWidth="md">
+            {!toDoList.length
+                ?
+                <Typography variant="h6" color="error">No Available Data to Display :)</Typography>
+                :
+                (<List>
+                    {toDoList.map(item => {
+                        return (
+                            <ListItem key={item.id} button>
+                                <ListItemIcon>
+                                    <CheckCircleIcon color="primary" />
+                                </ListItemIcon>
+
+                                <ListItemText primary={item} />
+                                <br></br>
+                                <ListItemSecondaryAction>
+                                    {/* We have both buttons available for the user to use to edit or delete */}
+                                    {/* <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
+                                        <EditIcon />
+                                    </IconButton> */}
+                                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        )
+                    })}
+                </List>)
+            }
+        </Container>        
     )
 } 
 
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Form);
 export default Form;
+
+
+// {/* <ul>
+//                         {
+//                             toDoList.length >= 1 ? toDoList.map((item, idx) => {
+//                                 return <li key="idx">{item}</li>
+//                             })
+//                             : "Enter a to do list item!" }
+//                     </ul>
+                    
+//                     <ul>
+//                             if (toDoList.length >= 1) {
+//                                 toDoList.map((item, idx) => {
+//                                     return <li key="idx">{item}</li>
+//                                 })
+//                             } else {
+//                                 "Enter a to do list item!"
+//                             }
+//                     </ul> */}
