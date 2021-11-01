@@ -45,6 +45,8 @@ const AddTask = () => {
     const handleChange = (e) => {
         e.preventDefault()
 
+        const title = event.target.value;
+        
         setUserInput(e.target.value);
         // console.log(userInput);
     }
@@ -53,31 +55,32 @@ const AddTask = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        setToDoList([
-            // Making each new task appear at the top of the list
-            userInput,
-            // Throwing the rest of our list below
-            ...toDoList
-        ])
+        // Checking the length of our input
+        if (userInput.length >= 1){
+            setToDoList([
+                // Making each new task appear at the top of the list
+                userInput,
+                // Throwing the rest of our list below
+                ...toDoList
+            ])
+        } else {
+            alert("Title of task isn't long enough. Length must be >= 1.")
+        }
+        
     }
 
     return (
         <Container maxWidth="sm" className={classes.root}>
-        
             <Grid container alignItems="center">
                 <Grid item md={12}>
                     <TextField id="outlined-basic" onChange={handleChange} label="Add task(s)" placeholder="Task Name" fullWidth multiline variant="outlined" />
-                    {/* <TextField value={title} onChange={handleChange} 
-                    error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter A Task To Get Done" multiline variant="outlined" /> */}
                 </Grid>
 
                 <Grid item md={12}>
                     {/* Our button here will call handleClick() when our button is clicked! */}
-                    <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>Add</Button>
-                    {/* <Button variant="contained" color="primary">Add</Button> */}
+                    <Button className={classes.button} variant="contained" type="submit" color="primary" onClick={handleSubmit}>Add</Button>
                 </Grid>
             </Grid>
-        
         </Container>
     )
 } 

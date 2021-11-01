@@ -7,6 +7,10 @@
 // import { connect } from 'react-redux'
 // import * as actionTypes from '../store/actions';
 // import * as actionTypes from '../store/actions/actions';
+
+import React from 'react';
+
+
 import { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import Grid from '@material-ui/core/Grid';
@@ -24,13 +28,17 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// Uncompleted tasks icon
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+// Completed tasks icon
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 // import ArticleSharpIcon from '@material-ui/icons-material/ArticleSharp';
 // import AutoAwesomeSharpIcon from '@material-ui/icons/AutoAwesomeSharp';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ListIcon from '@material-ui/icons/List';
+import * as actionTypes from '../store/actions/actionTypes';
+import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'
 
 
 const useStyles = makeStyles({
@@ -39,70 +47,132 @@ const useStyles = makeStyles({
     }
 });
 
-const Form = () => {
+const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
     const classes = useStyles();
+
+    // Used to check if task is complete or not
+    const [clicked, setClicked] = useState(false);
 
     // Creating our variable for user input
     const [userInput, setUserInput] = useState('');
 
+    // Creating our variable for user input
+    const [editInput, setEditInput] = useState('');
+
     // Accessing our UserContect Global data!
     const {toDoList, setToDoList} = useContext(UserContext);
 
-    const handleChange = (e) => {
-        e.preventDefault()
-
-        setUserInput(e.target.value);
-        // console.log(userInput);
+    const toggleComplete = (i) => {
+        setToDoList(toDoList.map((task, k) => k === i  ? {
+            ...task,
+            complete: !todoList.complete
+        }
+        : task ));
     }
 
+    // TODO: Need to ensure that when the done icon is clicked, not all tasks click to be finished!
+    const handleIconClick = (item) => {
+        // Changing our value of clicked so the icon can be triggered to switch
+         setClicked(!clicked);
+
+         setUserInput(item.target);
+         console.log(item);
+        
+         // Updating our specific element?
+        //  setToDoList([
+        //     // Making each new task appear at the top of the list
+        //     item
+        // ])
+    }
+
+
+    // When the edit button is clicked, we can set the new title, 
+    // set the edit flag to true, and store entire selected item in the item state
+    const handleEdit = (item) => {
+        item.preventDefault()
+
+        // Checking the length of our edit input is valid
+        if (item.length >= 1){
+            setUserInput(item);
+        } else {
+            alert("Title of task isn't long enough. Length must be >= 1.")
+        } 
+
+
+        // Prompt the user to enter text?
+        // // Save this text
+        // handleChange();
+
+        // // Editing our specific item in our array with new text! 
+        // toDoList.find( ({ item }) => item === userInput);
+        
+        // // Spitting our our array back
+        // setToDoList(todoList);
+    }
+
+    // When the deleted button is clicked, we simply set the selected item in the item state
+    // and call the delete time function we defined within our reducer
+    const handleDelete = (item) => {
+        // Creating a new array of items with the current item param filtered out
+        const newArrIterms = toDoList.filter(currItem => toDoList.indexOf(currItem) != toDoList.indexOf(item));
+        setToDoList(newArrIterms);
+    }
+
+    // Dealing with Edit input text change    
+    const handleChange = (e) => {
+        e.preventDefault()
+        const editTitle = e.target.value;
+        setUserInput(editTitle);
+    }
+
+    // Adding a task once "Add" button is clicked
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        setToDoList([
-            // Making each new task appear at the top of the list
-            userInput,
-            // Throwing the rest of our list below
-            ...toDoList
-        ])
+        // Checking the length of our input
+        if (userInput.length >= 1){
+            setToDoList([
+                // Making each new task appear at the top of the list
+                userInput,
+                // Throwing the rest of our list below
+                ...toDoList
+            ])
+        } else {
+            alert("Title of task isn't long enough. Length must be >= 1.")
+        } 
     }
 
     return (
-        // <form>
-        //     <Grid container alignItems="center">
-        //         <Grid item md={12}>
-        //             <TextField id="outlined-basic" onChange={handleChange} label="Add task(s)" placeholder="Task Name" fullWidth multiline variant="outlined" />
-        //             {/* <TextField value={title} onChange={handleChange} 
-        //             error={!!error} helperText={error} id="outlined-basic" fullWidth label="Enter A Task To Get Done" multiline variant="outlined" /> */}
-        //         </Grid>
-
-        //         <Grid item md={12}>
-        //             {/* Our button here will call handleClick() when our button is clicked! */}
-        //             <Button variant="contained" type="submit" color="primary" onClick={handleSubmit}>Add</Button>
-        //             {/* <Button variant="contained" color="primary">Add</Button> */}
-        //         </Grid>
-        //     </Grid>
-        // </form>
-
         <Container className={classes.container} maxWidth="md">
+            <Grid container alignItems="center">
+                {/* <Grid item md={12}>
+                    <TextField id="outlined-basic" onChange={handleChange} label="Use This To Edit Task" placeholder="Use This To Edit Task" fullWidth multiline variant="outlined" />
+                </Grid> */}
+            </Grid>
             {!toDoList.length
                 ?
-                <Typography variant="h6" color="error">No Available Data to Display :)</Typography>
+                <Typography variant="h6" color="error"></Typography>
                 :
                 (<List>
                     {toDoList.map(item => {
                         return (
                             <ListItem key={item.id} button>
-                                <ListItemIcon>
-                                    <CheckCircleIcon color="primary" />
+                                {/* Instead have an array that carries each item, having data like name and "clicked" */}
+                                <ListItemIcon onClick={() => handleIconClick(item)}>
+                                {/* <ListItemIcon onClick={() => toggleComplete(item)} style={{
+                                    textDecoration: complete ? "line-through" : ""
+                                }}> */}
+                                    {clicked ? <CheckCircleOutlineIcon color="primary" />
+                                                : <CheckCircleIcon color="primary" /> }
                                 </ListItemIcon>
 
                                 <ListItemText primary={item} />
-                                <br></br>
+                                
                                 <ListItemSecondaryAction>
                                     {/* We have both buttons available for the user to use to edit or delete */}
-                                    {/* <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
+                                    <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(item)}>
                                         <EditIcon />
-                                    </IconButton> */}
+                                    </IconButton>
                                     <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item)}>
                                         <DeleteIcon />
                                     </IconButton>
@@ -110,31 +180,14 @@ const Form = () => {
                             </ListItem>
                         )
                     })}
+                <br></br>
+                <Grid item alignItems="center" justify="center" md={12}>
+                    <Button variant="contained" type="submit" color="primary" onClick={() => setToDoList([])}>Reset</Button>
+                </Grid>
                 </List>)
             }
         </Container>        
     )
 } 
 
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Form);
 export default Form;
-
-
-// {/* <ul>
-//                         {
-//                             toDoList.length >= 1 ? toDoList.map((item, idx) => {
-//                                 return <li key="idx">{item}</li>
-//                             })
-//                             : "Enter a to do list item!" }
-//                     </ul>
-                    
-//                     <ul>
-//                             if (toDoList.length >= 1) {
-//                                 toDoList.map((item, idx) => {
-//                                     return <li key="idx">{item}</li>
-//                                 })
-//                             } else {
-//                                 "Enter a to do list item!"
-//                             }
-//                     </ul> */}
