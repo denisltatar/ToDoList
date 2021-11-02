@@ -26,14 +26,12 @@ const store = createStore(reducer);
 
 export default function Home() {
   // Creating our array of items which will be used through our global provider, UserContext
-  // const [toDoList, setToDoList] = useState([{value: '', clicked: 'false'}]); 
   const [toDoList, setToDoList] = useState([]); 
 
   return (
     <Provider store={store}>
       <div className={styles.container}>
         <UserContext.Provider value={{toDoList, setToDoList}}> 
-          {/* <Router path="/" ></Router> */}
           <main className={styles.main}>
             {/* MY COMPONENTS */}
             <Header/>

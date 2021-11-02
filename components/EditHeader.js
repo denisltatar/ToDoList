@@ -1,4 +1,3 @@
-// All my imports
 import styles from '../styles/Home.module.css'
 // Making our button look cool hehe
 import Button from '@material-ui/core/Button';

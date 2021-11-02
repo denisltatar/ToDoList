@@ -14,39 +14,9 @@ function Edit() {
 
     // Accessing our UserContect Global data!
     const {toDoList, setToDoList} = useContext(UserContext);
-    // console.log(toDoList.length);
 
     return (
       <UserContext.Provider value={{toDoList, setToDoList}}>
-        {/* <EditHeader/> */}
-        
-        {/* <Container className={classes.container} maxWidth="md">
-            {!toDoList.length
-                ?
-                <Typography variant="h6" color="error">No Available Data to Display :)</Typography>
-                :
-                (<List>
-                    {toDoList.map(item => {
-                        return (
-                            <ListItem key={item.id} button>
-                                <ListItemIcon>
-                                    <CheckCircleIcon color="primary" />
-                                </ListItemIcon>
-                                <ListItemText primary={item} />
-                                <br></br>
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(item)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        )
-                    })}
-                </List>)
-            }
-        </Container>      */}
-        
-        {/* <EditFooter/> */}
       </UserContext.Provider>
       )
 }

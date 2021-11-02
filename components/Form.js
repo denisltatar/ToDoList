@@ -1,22 +1,9 @@
-// import React from 'react';
-// import TextField from '@material-ui/core/TextField';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Grid from '@material-ui/core/Grid'
-// import Container from '@material-ui/core/Container';
-// import Button from '@material-ui/core/Button'
-// import { connect } from 'react-redux'
-// import * as actionTypes from '../store/actions';
-// import * as actionTypes from '../store/actions/actions';
-
 import React from 'react';
-
-
 import { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
@@ -32,8 +19,6 @@ import Typography from '@material-ui/core/Typography';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 // Completed tasks icon
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-// import ArticleSharpIcon from '@material-ui/icons-material/ArticleSharp';
-// import AutoAwesomeSharpIcon from '@material-ui/icons/AutoAwesomeSharp';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ListIcon from '@material-ui/icons/List';
 import * as actionTypes from '../store/actions/actionTypes';
@@ -52,8 +37,6 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
 
     // Used to check if task is complete or not
     const [clicked, setClicked] = useState(false);
-
-    
 
     // Creating our variable for user input
     const [userInput, setUserInput] = useState('');
@@ -76,9 +59,6 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
         : task ));
     }
 
-    
-
-
     // When the edit button is clicked, we can set the new title, 
     // set the edit flag to true, and store entire selected item in the item state
     const handleEdit = (item) => {
@@ -90,17 +70,6 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
         } else {
             alert("Title of task isn't long enough. Length must be >= 1.")
         } 
-
-
-        // Prompt the user to enter text?
-        // // Save this text
-        // handleChange();
-
-        // // Editing our specific item in our array with new text! 
-        // toDoList.find( ({ item }) => item === userInput);
-        
-        // // Spitting our our array back
-        // setToDoList(todoList);
     }
 
     // When the deleted button is clicked, we simply set the selected item in the item state
@@ -145,23 +114,15 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
 
     return (
         <Container className={classes.container} maxWidth="md">
-            <Grid container alignItems="center">
-                {/* <Grid item md={12}>
-                    <TextField id="outlined-basic" onChange={handleChange} label="Use This To Edit Task" placeholder="Use This To Edit Task" fullWidth multiline variant="outlined" />
-                </Grid> */}
-            </Grid>
             {!toDoList.length
                 ?
                 <Typography variant="h6" color="error"></Typography>
                 :
                 (<List>
                     {toDoList.map((item, idx) => {
-                        
                         return (
                             <ListItem key={item.id} button>
-                                {/* Instead have an array that carries each item, having data like name and "clicked" */}
                                 <ListItemIcon onClick={() => {
-                                    // console.log(seen);
                                     setSeen(prevItems => [...prevItems, idx]);}}>
 
                                     {seen.includes(idx) ? < CheckCircleIcon color="primary" />

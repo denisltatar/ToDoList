@@ -1,5 +1,4 @@
 import Head from 'next/head'
-// Completed tasks icon
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import styles from '../styles/Home.module.css'
 // Making our button look cool hehe

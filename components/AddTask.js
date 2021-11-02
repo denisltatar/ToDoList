@@ -45,7 +45,6 @@ const AddTask = () => {
         const title = event.target.value;
         
         setUserInput(e.target.value);
-        // console.log(userInput);
     }
 
     // Adding a task once "Add" button is clicked
@@ -70,6 +69,7 @@ const AddTask = () => {
         <Container maxWidth="sm" className={classes.root}>
             <Grid container alignItems="center">
                 <Grid item md={12}>
+                    {/* Our input here will call handleChange() when our input changes */}
                     <TextField id="outlined-basic" onChange={handleChange} label="Add task(s)" placeholder="Task Name" fullWidth multiline variant="outlined" />
                 </Grid>
 
