@@ -17,11 +17,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-// import ArticleSharpIcon from '@material-ui/icons-material/ArticleSharp';
-// import AutoAwesomeSharpIcon from '@material-ui/icons/AutoAwesomeSharp';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ListIcon from '@material-ui/icons/List';
 

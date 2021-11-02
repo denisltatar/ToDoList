@@ -53,11 +53,17 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
     // Used to check if task is complete or not
     const [clicked, setClicked] = useState(false);
 
+    
+
     // Creating our variable for user input
     const [userInput, setUserInput] = useState('');
 
     // Creating our variable for user input
     const [editInput, setEditInput] = useState('');
+
+    // Index value carrier
+    const [index, setIndex] = useState(0);
+    const [seen, setSeen] = useState([]);
 
     // Accessing our UserContect Global data!
     const {toDoList, setToDoList} = useContext(UserContext);
@@ -70,20 +76,7 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
         : task ));
     }
 
-    // TODO: Need to ensure that when the done icon is clicked, not all tasks click to be finished!
-    const handleIconClick = (item) => {
-        // Changing our value of clicked so the icon can be triggered to switch
-         setClicked(!clicked);
-
-         setUserInput(item.target);
-         console.log(item);
-        
-         // Updating our specific element?
-        //  setToDoList([
-        //     // Making each new task appear at the top of the list
-        //     item
-        // ])
-    }
+    
 
 
     // When the edit button is clicked, we can set the new title, 
@@ -132,14 +125,22 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
         // Checking the length of our input
         if (userInput.length >= 1){
             setToDoList([
-                // Making each new task appear at the top of the list
-                userInput,
                 // Throwing the rest of our list below
-                ...toDoList
+                ...toDoList,
+                // Making each new task appear at the top of the list
+                userInput
             ])
         } else {
             alert("Title of task isn't long enough. Length must be >= 1.")
         } 
+    }
+
+    // TODO: Need to ensure that when the done icon is clicked, not all tasks click to be finished!
+    const handleIconClick = (item, idx) => {
+        if (index === idx){
+            // Changing our value of clicked so the icon can be triggered to switch
+            setClicked(!clicked);
+        }
     }
 
     return (
@@ -154,16 +155,17 @@ const Form = ({ todoList, setTitle, setItem, setEdit, deleteItem }) => {
                 <Typography variant="h6" color="error"></Typography>
                 :
                 (<List>
-                    {toDoList.map(item => {
+                    {toDoList.map((item, idx) => {
+                        
                         return (
                             <ListItem key={item.id} button>
                                 {/* Instead have an array that carries each item, having data like name and "clicked" */}
-                                <ListItemIcon onClick={() => handleIconClick(item)}>
-                                {/* <ListItemIcon onClick={() => toggleComplete(item)} style={{
-                                    textDecoration: complete ? "line-through" : ""
-                                }}> */}
-                                    {clicked ? <CheckCircleOutlineIcon color="primary" />
-                                                : <CheckCircleIcon color="primary" /> }
+                                <ListItemIcon onClick={() => {
+                                    // console.log(seen);
+                                    setSeen(prevItems => [...prevItems, idx]);}}>
+
+                                    {seen.includes(idx) ? < CheckCircleIcon color="primary" />
+                                                : <CheckCircleOutlineIcon color="primary" /> }
                                 </ListItemIcon>
 
                                 <ListItemText primary={item} />
